@@ -68,8 +68,8 @@ export default function Home() {
   // Persist any store change to URL + localStorage, and drive downstream
   // side effects.
   createEffect(
-    () => JSON.stringify(uiState),
-    () => persist(),
+    () => ({ ...uiState }),
+    (snap) => persist(snap),
   );
   createEffect(
     () => uiState.volume,
@@ -178,7 +178,10 @@ export default function Home() {
 
       {/* Header */}
       <header class="flex items-center justify-between px-3 h-11 border-b border-neutral-800 bg-neutral-950 shrink-0">
-        <h1 class="text-sm font-medium tracking-tight">Kennan's Tuner</h1>
+        <h1 class="text-sm font-medium tracking-tight flex items-center gap-2">
+          <img src="/half-sharp.svg" alt="" width="16" height="16" />
+          Kennan's Tuner
+        </h1>
         <div class="flex items-center h-full">
           <a
             href="https://github.com/kennanhunter/tuner"
@@ -239,7 +242,7 @@ export default function Home() {
               class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 grid place-items-center text-neutral-400"
               aria-hidden="true"
             >
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" class={`transition-transform ${micOpen() ? 'rotate-180' : ''}`}>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" class={`motion-safe:transition-transform ${micOpen() ? 'rotate-180' : ''}`}>
                 <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </span>

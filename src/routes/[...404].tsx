@@ -1,26 +1,28 @@
-import { Title } from '@solidjs/meta';
-import type { RouteDefinition } from '@solidjs/router';
-import { httpStatus } from '@solidjs/web';
+import { Title } from "@solidjs/meta";
+import type { RouteDefinition } from "@solidjs/router";
+import { httpStatus } from "@solidjs/web";
 
-// The catch-all route. httpStatus() is a no-op in the browser and takes
-// effect when SSR is enabled; it runs in preload so the status code is set
-// before the response head flushes.
 export const route = {
   preload: () => httpStatus(404),
 } satisfies RouteDefinition;
 
 export default function NotFound() {
   return (
-    <main>
-      <Title>Not Found - Solid App</Title>
-      <h1>Page Not Found</h1>
-      <p>
-        Visit{' '}
-        <a href="https://docs.solidjs.com" target="_blank" rel="noreferrer">
-          docs.solidjs.com
-        </a>{' '}
-        to learn how to build Solid apps.
-      </p>
+    <main class="h-screen w-screen bg-neutral-950 text-neutral-200 grid place-items-center px-6">
+      <Title>Not Found - Kennan's Tuner</Title>
+      <div class="text-center grid gap-4 justify-items-center max-w-sm">
+        <img src="/half-sharp.svg" alt="" width="64" height="64" />
+        <h1 class="text-2xl font-medium tracking-tight">Off pitch</h1>
+        <p class="text-sm text-neutral-400 leading-relaxed">
+          That page doesn't exist.
+        </p>
+        <a
+          href="/"
+          class="mt-2 px-5 py-3 text-sm font-medium bg-emerald-500 hover:bg-emerald-400 text-neutral-950"
+        >
+          Back to the tuner
+        </a>
+      </div>
     </main>
   );
 }

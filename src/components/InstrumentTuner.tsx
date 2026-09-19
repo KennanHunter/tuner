@@ -75,6 +75,7 @@ export default function InstrumentTuner() {
       setPlaying(false);
     }
     setUi('activeInstrument', t);
+    setUi('instrumentOpen', true);
   };
 
   const setMode = (m: Accidental) => setUi('accidental', m);
@@ -82,14 +83,17 @@ export default function InstrumentTuner() {
   onCleanup(stopSustainedTone);
 
   return (
-    <div class="grid h-full min-h-0 min-w-0 w-full grid-rows-[auto_1fr] border-t border-neutral-800 overflow-hidden">
+    <div
+      class="grid h-full min-h-0 min-w-0 w-full border-t border-neutral-800 overflow-hidden"
+      style={{ 'grid-template-rows': `auto ${uiState.instrumentOpen ? 'minmax(0, 1fr)' : '0px'}` }}
+    >
       <div class="flex h-9 border-b border-neutral-800 min-w-0 overflow-hidden">
         <For each={TABS}>
           {(tab) => (
             <button
               type="button"
               class={`min-w-0 flex-shrink px-3 text-xs capitalize whitespace-nowrap truncate border-r border-neutral-800 ${
-                uiState.activeInstrument === tab
+                uiState.activeInstrument === tab && uiState.instrumentOpen
                   ? 'bg-neutral-900 text-sky-300'
                   : 'text-neutral-400 hover:bg-neutral-900 hover:text-neutral-200'
               }`}
@@ -99,8 +103,20 @@ export default function InstrumentTuner() {
             </button>
           )}
         </For>
+        <button
+          type="button"
+          class="flex-1 min-w-0 flex items-center justify-end pr-3 hover:bg-neutral-900"
+          onClick={() => setUi('instrumentOpen', (v) => !v)}
+          aria-expanded={String(uiState.instrumentOpen) as 'true' | 'false'}
+          aria-label={uiState.instrumentOpen ? 'Collapse instrument tuner' : 'Expand instrument tuner'}
+        >
+          <span class="w-7 h-7 grid place-items-center text-neutral-400">
+            {uiState.instrumentOpen ? '−' : '+'}
+          </span>
+        </button>
       </div>
 
+      <Show when={uiState.instrumentOpen}>
       <div class="grid min-h-0 min-w-0 p-2 overflow-hidden">
         <Show
           when={uiState.activeInstrument === 'custom'}
@@ -291,6 +307,7 @@ export default function InstrumentTuner() {
           </div>
         </Show>
       </div>
+      </Show>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { createSignal, onCleanup } from 'solid-js';
-import pitchProcessorUrl from './pitch-processor.js?url';
+import pitchProcessorUrl from './processor/pitch-processor.ts?worker&url';
 
 export const HISTORY = 1200;
 export const SPEC_BINS = 96;

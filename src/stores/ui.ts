@@ -10,6 +10,7 @@ export type UiState = {
   ampOpen: boolean;
   pitchOpen: boolean;
   spectroOpen: boolean;
+  instrumentOpen: boolean;
   volume: number;
   xPreset: XPreset;
   yPreset: YPreset;
@@ -23,9 +24,10 @@ export type UiState = {
 
 const DEFAULTS: UiState = {
   settingsOpen: false,
-  ampOpen: true,
+  ampOpen: false,
   pitchOpen: true,
   spectroOpen: false,
+  instrumentOpen: true,
   volume: 1,
   xPreset: 'medium',
   yPreset: 'default',
@@ -75,6 +77,7 @@ function fromRecord(obj: Record<string, unknown> | null): UiState {
     ampOpen: pickBool(obj.ampOpen, DEFAULTS.ampOpen),
     pitchOpen: pickBool(obj.pitchOpen, DEFAULTS.pitchOpen),
     spectroOpen: pickBool(obj.spectroOpen, DEFAULTS.spectroOpen),
+    instrumentOpen: pickBool(obj.instrumentOpen, DEFAULTS.instrumentOpen),
     volume: pickNumber(obj.volume, DEFAULTS.volume, 0, 1),
     xPreset: pickEnum(obj.xPreset, X_PRESETS, DEFAULTS.xPreset),
     yPreset: pickEnum(obj.yPreset, Y_PRESETS, DEFAULTS.yPreset),
@@ -93,6 +96,7 @@ function toRecord(s: UiState): Record<string, string> {
     ampOpen: s.ampOpen ? '1' : '0',
     pitchOpen: s.pitchOpen ? '1' : '0',
     spectroOpen: s.spectroOpen ? '1' : '0',
+    instrumentOpen: s.instrumentOpen ? '1' : '0',
     volume: s.volume.toFixed(3),
     xPreset: s.xPreset,
     yPreset: s.yPreset,
@@ -163,9 +167,9 @@ export function setUi<K extends keyof UiState>(
   });
 }
 
-export function persist() {
-  writeQuery(uiState);
-  writeLocal(uiState);
+export function persist(s: UiState = uiState) {
+  writeQuery(s);
+  writeLocal(s);
 }
 
 // The saved state we'd offer to restore. Non-null only when there's a

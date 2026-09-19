@@ -2,6 +2,7 @@ import { fileRoutes } from 'filesystem-routing/vite';
 import { defineConfig } from 'vitest/config';
 import solid from '@solidjs/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   // Turnkey client mode: no index.html and no mount file — the plugin
@@ -14,6 +15,30 @@ export default defineConfig({
     solid({ start: true, extensions: ['.jsx', '.tsx'], diagnostics: true }), // add `ssr: true` for streaming SSR
     fileRoutes({ types: true }),
     tailwindcss(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['half-sharp.svg', 'apple-touch-icon.png', 'og-image.png', 'robots.txt'],
+      manifest: {
+        name: "Kennan's Tuner",
+        short_name: 'Tuner',
+        description: 'A fast, mobile-friendly web-based instrument tuner.',
+        theme_color: '#10b981',
+        background_color: '#0a0a0a',
+        display: 'standalone',
+        orientation: 'portrait',
+        start_url: '/',
+        scope: '/',
+        icons: [
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+          { src: '/half-sharp.svg', sizes: 'any', type: 'image/svg+xml' },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+      },
+    }),
   ],
   server: {
     port: 3000,

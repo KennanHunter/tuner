@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust (stable) with wasm target
+        run: |
+          rustup toolchain install stable --profile minimal --component clippy,rustfmt
+          rustup target add wasm32-unknown-unknown
+          rustup default stable
+
+      - name: Cargo cache
+        uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@just
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Full check (fmt, clippy, tests, zero-dep, coverage, ts-check)
+        run: just check
+
+      - name: Build examples wasm
+        run: cargo build -p anim-examples --release --target wasm32-unknown-unknown
+
+  docs:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust (stable) with wasm target
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup target add wasm32-unknown-unknown
+          rustup default stable
+
+      - name: Cargo cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install mdBook
+        run: |
+          curl -sSL "https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar -xz -C /usr/local/bin
+
+      - uses: taiki-e/install-action@just
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build docs site
+        run: just docs
+
+      # Deploy the built site as a Cloudflare Worker with Static Assets.
+      # Requires two repo secrets:
+      #   CLOUDFLARE_API_TOKEN  — a token with the "Edit Cloudflare Workers"
+      #                           template (or equivalent scopes).
+      #   CLOUDFLARE_ACCOUNT_ID — the account ID that owns the worker.
+      - name: Deploy to Cloudflare Workers
+        if: github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          packageManager: pnpm
+          command: deploy
