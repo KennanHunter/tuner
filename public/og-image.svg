@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <g transform="translate(140 175) scale(11.667)" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="square">
+    <line x1="12" y1="3" x2="12" y2="21"/>
+    <line x1="5" y1="10" x2="19" y2="8"/>
+    <line x1="5" y1="16" x2="19" y2="14"/>
+  </g>
+  <text x="490" y="310" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="96" font-weight="700" fill="#fafafa">Kennan's Tuner</text>
+  <text x="490" y="380" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="36" font-weight="400" fill="#a3a3a3">A fast, mobile-friendly web-based</text>
+  <text x="490" y="428" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="36" font-weight="400" fill="#a3a3a3">instrument tuner.</text>
+</svg>
