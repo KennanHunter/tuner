@@ -17,8 +17,16 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['half-sharp.svg', 'apple-touch-icon.png', 'og-image.png', 'robots.txt'],
+      includeAssets: [
+        'half-sharp.svg',
+        'apple-touch-icon.png',
+        'icon-maskable-512.png',
+        'og-image.png',
+        'robots.txt',
+        'favicon.ico',
+      ],
       manifest: {
+        id: '/',
         name: "Kennan's Tuner",
         short_name: 'Tuner',
         description: 'A fast, mobile-friendly web-based instrument tuner.',
@@ -29,10 +37,10 @@ export default defineConfig({
         start_url: '/',
         scope: '/',
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
-          { src: '/half-sharp.svg', sizes: 'any', type: 'image/svg+xml' },
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: '/half-sharp.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
         ],
       },
       workbox: {

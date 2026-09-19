@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp dist/client/index.html dist/client/404.html",
     "serve": "vite preview",
     "test": "vitest",
     "lint": "oxlint src"

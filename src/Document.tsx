@@ -43,8 +43,13 @@ export default function Document(props: ParentProps) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://tuner.kennan.dev/og-image.png" />
         <link rel="icon" type="image/svg+xml" href="/half-sharp.svg" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Tuner" />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
